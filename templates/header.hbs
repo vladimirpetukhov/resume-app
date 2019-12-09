@@ -1,0 +1,87 @@
+<div class="navbar navbar-default navbar-fixed-top navbar-inverse nav-justified  sw2 p-0" style="height: 40px">
+
+    <div class="col-md-3 container justify-content-center">
+        <a href="#/home"><i class="cw-t fa fa-2x fa-globe">&nbsp;{{Title}}</i></a>
+    </div>
+    <div class="col-md-9 container p5 d-flex-justify-content-end text-right" style="color: white">
+        <div class="offset-2 d-flex justify-content-between">
+            <div class="btn-group  p-0">
+                <a class="myButton dropdown-toggle" data-toggle="dropdown"><i class="far fa-edit"></i> Редактор
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <a class="col-12" href="#/edit-menu" target="_tab">Слоеве</a>
+                    <a class="col-12" href="#/edit-styles" target="_tab">Стилове</a>
+                    <a class="col-12" href="#/edit-graphic-data" target="_tab">Графични данни</a>
+                    <li>
+                        <div id="btnSelect" class="btnMenu btn-floating btn-large waves-effect waves-light teal"><i
+                                class="mdi-action-speaker-notes"></i>
+                        </div>
+                    </li>
+                    <li>
+                        <div id="btnEdit" class="btnMenu btn-floating btn-large waves-effect waves-light teal"><i
+                                class="mdi-editor-mode-edit"></i>
+                        </div>
+                    </li>
+                    <li>
+                        <div id="btnDrawPoint" class="btnMenu btn-floating btn-large waves-effect waves-light teal"><i
+                                class="mdi-maps-place"></i>
+                        </div>
+                    </li>
+                    <li>
+                        <div id="btnDrawLine" class="btnMenu btn-floating btn-large waves-effect waves-light teal"><i
+                                class="mdi-social-share"></i>
+                        </div>
+                    </li>
+                    <li>
+                        <div id="btnDrawPoly" class="btnMenu btn-floating btn-large waves-effect waves-light teal"><i
+                                class="mdi-device-signal-cellular-null"></i>
+                        </div>
+                    </li>
+                    <li>
+                        <div id="btnDelete" class="btnMenu btn-floating btn-large waves-effect waves-light teal"><i
+                                class="mdi-action-delete"></i>
+                        </div>
+                    </li>
+                    <li>
+                        <div id="btnZoomIn" class="btn-floating btn-large waves-effect waves-light teal"><i
+                                class="mdi-content-add"></i>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+            <div class="btn-group ml-2  p-0">
+                <a class="myButton dropdown-toggle" data-toggle="dropdown"><i class="fa fa-lg fa-fw fa-plus-square"></i>
+                    Превключи
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    
+                        <a href="#">vik.map</a>
+                    
+                        <a href="#">vik_test.map</a>
+                    
+                   
+                        <a href="#">vik_administrative.map</a>
+                    
+                </ul>
+            </div>
+            <a class="myButton ml-2" onclick="clearSession()" title="Изчисти всички слоеве!"><i
+                    class="fa fa-fw fa-lg fa-refresh"></i>&nbsp;Презареди</a>
+            <a class="myButton ml-2 " data-toggle="modal" data-target="#search"><i
+                    class="fa fa-fw fa-lg fa-search"></i>Търси</a>
+            <a class="myButton ml-2 "><i class="fa fa-fw fa-lg fa-share"></i>Карта</a>
+            <a class="myButton ml-2 "><i class="fa fa-fw fa-lg fa-share"></i>Таблица</a>
+            <a class="myButton ml-2 " data-toggle="modal" data-target="#settings"><i
+                    class="fa fa-cogs fa-fw fa-lg"></i>&nbsp;Настройки</a>
+        </div>
+
+
+
+    </div>
+</div>
+</div>
+<script>
+    function clearSession() {
+        sessionStorage.clear();
+        window.location.reload();
+    }
+</script>

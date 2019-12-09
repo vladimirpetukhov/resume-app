@@ -1,0 +1,437 @@
+.body{
+    overflow-x: hidden;
+}
+
+.multilevelpushmenu_wrapper {
+	position: absolute;
+	overflow: hidden;
+	min-width: 100%;
+	/* min-height: 100%; */
+	margin: 0;
+	padding: 0;
+}
+
+#menu_multilevelpushmenu{
+	height: 0;
+}
+
+.multilevelpushmenu_wrapper .levelHolderClass {
+	position: fixed;
+	left: -100%;
+	top: 0px;
+	background: #2780e3;
+	width: auto;
+	min-height: 100%;
+	font-family: 'Open Sans Condensed', sans-serif;
+	font-size: 0.8em;
+	-moz-box-shadow: 5px 0 5px -5px #1f4164;
+	-webkit-box-shadow: 5px 0 5px -5px #1f4164;
+	box-shadow: 5px 0 5px -5px #1f4164;
+	filter: progid:DXImageTransform.Microsoft.Shadow(color=#1f4164,direction=90,strength=2);
+	zoom: 1;
+	z-index: 2500;
+	overflow-y: auto;
+    max-height: 90%;
+    overflow-x: hidden;
+    padding-top: 10px;
+}
+
+.multilevelpushmenu_wrapper .levelHolderClass .levelHolderClassLegend {
+	position: fixed;
+	left: -100%;
+	background: #2780e3;;
+	width: auto;
+	min-height: 100%;
+	font-family: 'Open Sans Condensed', sans-serif;
+	font-size: 0.8em;
+	-moz-box-shadow: 5px 0 5px -5px #1f4164;
+	-webkit-box-shadow: 5px 0 5px -5px #1f4164;
+	box-shadow: 5px 0 5px -5px #1f4164;
+	filter: progid:DXImageTransform.Microsoft.Shadow(color=#1f4164,direction=90,strength=2);
+	zoom: 1;
+	z-index: 2500;
+	color: white;
+}
+
+
+
+.multilevelpushmenu_wrapper .levelHolderClass .levelHolderClassLegend li {
+	padding-left: 0;
+	
+}
+
+.multilevelpushmenu_wrapper .levelHolderClass .levelHolderClassLegend li:hover {
+	background: transparent;
+}
+
+.menudisabled{
+	pointer-events: none;
+	opacity: 0.8;
+}
+
+#lagend-table>  li{
+	background-color: dimgray;
+	text-align: center;
+	padding: 10px 15px 10px 15px;;
+}
+
+.multilevelpushmenu_wrapper .levelHolderClass .levelHolderClassLegend img{
+	max-width: 300px;
+	max-height: 30px;
+}
+
+
+.multilevelpushmenu_wrapper .multilevelpushmenu_inactive {
+    background: #2780e3;
+    -moz-box-shadow: 0px 13px 21px #020945;
+    -webkit-box-shadow: 0px 13px 21px #020945;
+    box-shadow: 0px 13px 21px #020945;
+	
+}
+
+.multilevelpushmenu_wrapper h2 {
+	font-size: 18px;
+	font-weight:bold;
+	color: white;
+	padding: 0 10px 0 20px;
+	text-align: center;
+	
+}
+
+.multilevelpushmenu_wrapper .levelHolderClassLegend ul {
+	font-size: 14px;
+	font-weight:bold;
+	background-color: white;
+	padding: 0 10px 0 20px;
+	text-align: center;
+	
+	
+}
+
+.multilevelpushmenu_wrapper ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.multilevelpushmenu_wrapper li {
+	
+	border-top: 1px solid #295685;
+	padding: 5px 10px 5px 35px;
+    word-break:break-all;
+    height: 40px;
+}
+
+
+
+
+
+.multilevelpushmenu_wrapper li:last-child {
+	border-bottom: 1px solid #295685;
+}
+
+.multilevelpushmenu_wrapper li:hover {
+	background-color: #295685;
+}
+
+.multilevelpushmenu_wrapper a {
+	display: block;
+	outline: none;
+	font-size: 18px;
+	text-decoration: none;
+	color: #fff;
+	
+}
+
+.groupIcon {
+	margin-top: 1px;
+	outline: none;
+	font-size: 16px;
+	text-decoration: none;
+	color: #fff;
+	cursor: pointer;
+	
+}
+
+
+
+.multilevelpushmenu_wrapper a:hover {
+	color: #ffe;
+}
+
+.multilevelpushmenu_wrapper .backItemClass {
+	display: block;
+	padding: 10px 15px 10px 35px;
+	background: #1f66b5;
+	border-top: 1px solid #295685;
+	justify-content: baseline;
+	font-size:16px;
+}
+
+.multilevelpushmenu_wrapper .backItemClass a {
+	
+	font-weight: bold;
+	font-size:12px;
+}
+
+.multilevelpushmenu_wrapper .floatRight {
+	float: right;
+}
+
+.multilevelpushmenu_wrapper .cursorPointer {
+	cursor: pointer;
+}
+
+.multilevelpushmenu_wrapper .iconSpacing {
+	padding: 0 10px 0 0;
+}
+
+/*
+	Checkboxes
+*/
+.checkbox {
+    /* display: inline-flex; */
+    cursor: pointer;
+    position: relative;
+}
+
+.checkbox > input {
+    height: 12px;
+    width: 12px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -o-appearance: none;
+    appearance: none;
+    border: 1px solid #295685;    
+    outline: none;
+    transition-duration: 0.0s;
+    background-color: white;
+    cursor: pointer;
+  }
+
+.checkbox > input:checked {
+    border: 3px solid white;
+    background-color: #295685;
+}
+
+.checkbox > input:checked + span::before {
+    content: '\2713';
+    display: block;
+    text-align: center;
+    color: #41B883;
+    position: absolute;
+    left: 0.7rem;
+    top: 0.2rem;
+}
+
+.checkbox > input:active {
+    border: 2px solid #34495E;
+}
+
+.radio, .checkbox {
+    position: relative;
+    display: block;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+
+a.tooltips {
+  position: relative;
+  display: inline;
+  font-size: 22px;
+}
+a.tooltips span {
+  opacity: 0.5;
+  left: 100%;
+  top: 0;
+  margin-top: -NaNpx;
+  margin-left: 15px;
+  position: absolute;
+  width:140px;
+  color: #FFFFFF;
+  background: #000000;
+  height: 30px;
+  line-height: 30px;
+  text-align: center;
+  visibility: visible;
+  border-radius: 6px;
+  box-shadow: 0px 0px 0px #800000;
+  visibility: hidden;
+  font-size: 0.8em;
+}
+a.tooltips span:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 100%;
+  margin-top: -12px;
+  width: 6px; height: 0;
+  border-right: 12px solid #000000;
+  border-top: 12px solid transparent;
+  border-bottom: 12px solid transparent;
+  margin-right: 1px;
+  translate:0.3s;
+}
+a:hover.tooltips span {
+	
+  visibility: visible;
+  opacity: 0.5;
+  left: 100%;
+  top: 0;
+  margin-top: -NaNpx;
+  margin-left: 15px;
+  z-index: 999;
+}
+
+
+.myButton{
+	background-color: transparent;
+     
+    display: inline-block;
+    cursor: pointer;
+    color: #ffffff;
+    font-family: Arial;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 0.8em;
+}
+
+.open>.dropdown-menu {
+    display: block;
+    top: 130%;
+    border: 1px solid darkblue;
+    left: 5%;
+    padding: 5px;
+    text-align: center;
+}
+
+.btn-group.open .dropdown-toggle {
+    
+    box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
+}
+
+.navbar-inverse{
+	background:#2780e3;
+	color :white;
+}
+
+.menu li:first-child {
+    background:#f00;
+    font-weight:bold;
+    font-family:arial black;
+    font-size:200%;
+    background:url(http://i.imgur.com/3QGAU.png);
+    border-color: #fff;
+    border-width: 2px;
+    border-style: solid;
+    box-shadow: 0 0 2px 1px #aaa;
+}
+.menu li {
+    background:#000;
+    color:#fff;
+    font-size:25px;
+}
+.menu a{
+    text-decoration: none;
+    color:#fff;
+}
+#menu16 {
+    -webkit-transform-origin: 17px 17px;
+    -moz-transform-origin: 17px 17px;
+    -o-transform-origin: 17px 17px;
+    transform-origin: 17px 17px;
+
+    -webkit-transition: all .5s ease;
+    -moz-transition: all .5s ease;
+    -o-transition: all .5s ease;
+    transition: all .5s ease;
+
+    -webkit-transform: rotate(180deg);
+    -moz-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    transform: rotate(180deg);
+}
+#menu16.circleMenu-open {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+#menu16.circleMenu-open > li:first-child {
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+}
+:not(#menu16).circleMenu-open > li:first-child {
+    -webkit-transform: rotate(315deg);
+    -moz-transform: rotate(315deg);
+    -o-transform: rotate(315deg);
+    transform: rotate(315deg);
+}
+
+nav{
+    width:200px;
+    float:left;
+}
+nav ul{
+    list-style:none;
+    padding:0;
+    margin:0;
+}
+nav a{
+    display:block;
+    text-decoration:none;
+}
+nav a.active{
+    background:blue;
+    color:#fff;
+}
+#examples {
+    margin-left:200px;
+}
+
+#examples > div {
+    display:none;
+    width:300px;
+    height:300px;
+    border:1px solid black;
+    position:relative;
+    overflow:hidden;
+}
+
+.menu{position:absolute;}
+
+#menu2, #menu14, #menu15, #menu16{
+    left:135px;
+    top:135px;
+}
+#menu3{
+    right:4px;
+    bottom:34px;
+}
+#menu4{
+    top:0;
+    right:4px;
+}
+#menu5{
+    bottom:34px;
+    left:0;
+}
+#menu6, #menu10{
+    top:0;
+    left:135px;
+}
+#menu7, #menu11{
+    top:135px;
+    left:0;
+}
+#menu8, #menu12{
+    bottom:34px;
+    left:135px;
+}
+#menu9, #menu13{
+    top:135px;
+    right:4px;
+}
