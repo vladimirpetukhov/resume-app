@@ -152,3 +152,94 @@ handlers.work_hristodoulu = async function(ctx) {
 		console.log(err);
 	}
 };
+
+handlers.skills_frameworks = async function(ctx) {
+    document.title='Skills|Frameworks ';
+	try {
+		ctx.loadPartials({
+			home: './templates/home.hbs',
+		}).then(function() {
+			this.partial('./templates/work/hristodoulu.hbs');
+		});
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+handlers.skills_langs = async function(ctx) {
+    document.title='Skills|Program Languages';
+	try {
+		ctx.loadPartials({
+			home: './templates/home.hbs',
+		}).then(function() {
+			this.partial('./templates/skills/langs.hbs');
+		});
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+handlers.skills_frameworks = async function(ctx) {
+    document.title='Skills|Frameworks';
+	try {
+		ctx.loadPartials({
+			home: './templates/home.hbs',
+		}).then(function() {
+			this.partial('./templates/skills/frameworks.hbs');
+		});
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+handlers.skills_orm = async function(ctx) {
+    document.title='Skills|ORM';
+	try {
+		ctx.loadPartials({
+			home: './templates/home.hbs',
+		}).then(function() {
+			this.partial('./templates/skills/orm.hbs');
+		});
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+handlers.skills_db= async function(ctx) {
+    document.title='Skills|Databases';
+	try {
+		ctx.loadPartials({
+			home: './templates/home.hbs',
+		}).then(function() {
+			this.partial('./templates/skills/db.hbs');
+		});
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+handlers.skills_others= async function(ctx) {
+    document.title='Skills|Others';
+	try {
+		ctx.loadPartials({
+			home: './templates/home.hbs',
+		}).then(function() {
+			this.partial('./templates/skills/others.hbs');
+		});
+	} catch (err) {
+		console.log(err);
+	}
+};
+
+handlers.langs_all= async function(ctx) {
+    document.title='Languages|All';
+	try {
+		ctx.loadPartials({
+			home: './templates/home.hbs',
+		}).then(function() {
+			this.partial('./templates/langs/all.hbs');
+		});
+	} catch (err) {
+		console.log(err);
+	}
+};

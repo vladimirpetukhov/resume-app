@@ -1,0 +1,24 @@
+<div id="frameworks" style="width: 100%; height: 100%"></div>
+
+<script>
+    anychart.onDocumentReady(function() {
+        // create a pie chart
+        
+        var chart_fr = anychart.column([
+            [".Net Framework MVC", 5],
+            [".Net WebForms", 3],
+            [".Net Framework WinForms", 3],
+            [".Net Core MVC", 5],
+            [".Net Core WebAPI", 4],
+            [".Net Core Razor", 3],
+            ["NodeJs", 4],
+            ["Angular", 3],
+            
+        ]);
+        chart_fr.title("Frameworks");
+        // set the container where chart will be drawn
+        chart_fr.container("frameworks");
+        //  draw the chart on the page
+        chart_fr.draw();
+    });
+</script> 

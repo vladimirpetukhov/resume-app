@@ -108,6 +108,35 @@
                 "icon": "",
                 "EnabledOnLoad":true
             },
+            {
+                "Name": "Skills",
+                "Title": "Skills/Frameworks",
+                "link":"#/skills/frameworks",
+                "icon": "",
+                "EnabledOnLoad":true
+            },            
+            {
+                "Name": "Skills",
+                "Title": "Skills/Program Languages",
+                "link":"#/skills/langs",
+                "icon": "",
+                "EnabledOnLoad":true
+            },
+            {
+                "Name": "Skills",
+                "Title": "Skills/ORM",
+                "link":"#/skills/orm",
+                "icon": "",
+                "EnabledOnLoad":true
+            },
+            {
+                "Name": "Skills",
+                "Title": "Skills/Databases",
+                "link":"#/skills/orm",
+                "icon": "",
+                "EnabledOnLoad":true
+            }
+
         ]
     }
   ]

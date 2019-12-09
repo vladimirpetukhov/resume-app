@@ -1,0 +1,20 @@
+<div id="orm" style="width: 100%; height: 100%"></div>
+
+<script>
+    anychart.onDocumentReady(function() {
+        // create a pie chart
+        
+        var chart_fr = anychart.column([
+            ["Entity Framework", 5],
+            ["ADO.NET", 4],
+            ["Sequelizer", 3],
+            ["Mongoose", 3]
+            
+        ]);
+        chart_fr.title("ORM's");
+        // set the container where chart will be drawn
+        chart_fr.container("orm");
+        //  draw the chart on the page
+        chart_fr.draw();
+    });
+</script> 

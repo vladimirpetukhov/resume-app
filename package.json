@@ -10,6 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "anychart": "^8.7.0",
     "bootstrap": "^4.3.1",
     "cpx": "^1.5.0",
     "cross-var": "^1.1.0",

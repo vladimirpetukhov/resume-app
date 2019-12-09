@@ -1,0 +1,21 @@
+<div id="db" style="width: 100%; height: 100%"></div>
+
+<script>
+    anychart.onDocumentReady(function() {
+        // create a pie chart
+        
+        var chart_fr = anychart.column([
+            ["MS SQL", 5],
+            ["Postgis/PostgeSQL", 3],
+            ["MongoDB", 3],
+            ["Kinvey", 2],
+            ["SQLite", 3]
+            
+        ]);
+        chart_fr.title("Databases");
+        // set the container where chart will be drawn
+        chart_fr.container("db");
+        //  draw the chart on the page
+        chart_fr.draw();
+    });
+</script> 

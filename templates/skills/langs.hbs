@@ -1,0 +1,19 @@
+<div id="languages" style="width: 100%; height: 100%"></div>
+
+<script>
+    anychart.onDocumentReady(function() {
+        // create a pie chart
+        
+        var chart = anychart.column([
+            ["C#", 5],
+            ["JavaScript", 4],
+            ["jQuery", 4],
+            ["Python", 3],
+        ]);
+        chart.title("Programing Languages");
+        // set the container where chart will be drawn
+        chart.container("languages");
+        //  draw the chart on the page
+        chart.draw();
+    });
+</script> 

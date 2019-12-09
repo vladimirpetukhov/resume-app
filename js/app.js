@@ -20,6 +20,14 @@ $(() => {
         this.get('#/work/pst',handlers.work_pst);
         this.get('#/work/link',handlers.work_link);
         this.get('#/work/hristodoulu',handlers.work_hristodoulu);
+        //skills
+        this.get('#/skills/langs',handlers.skills_langs);
+        this.get('#/skills/frameworks',handlers.skills_frameworks);
+        this.get('#/skills/orm',handlers.skills_orm);
+        this.get('#/skills/db',handlers.skills_db);
+        this.get('#/skills/others',handlers.skills_others);
+        //languages
+        this.get('#/langs/all',handlers.langs_all);
         
     });
     
