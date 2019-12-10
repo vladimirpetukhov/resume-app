@@ -213,8 +213,9 @@ console.log(settings.menu);
 								left: ((-1) * $levelHolder.width() + settings.overlapWidth),
 
 							}, function () {
-								$levelHolder.find('ul').hide(200, function () {
+								$levelHolder.find('ul').hide(400, function () {
 									$levelHolder.addClass(settings.menuInactiveClass);
+									
 								});
 							});
 							pushContainers((-1) * $levelHolder.width() + settings.overlapWidth);

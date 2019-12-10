@@ -150,10 +150,24 @@
                 "EnabledOnLoad":true
             },
             {
+                "Name": "Skills",
+                "Title": "Skills/Others/Geographikal Data",
+                "link":"#/skills/geo_data",
+                "icon": "",
+                "EnabledOnLoad":true
+            },
+            {
+                "Name": "Skills",
+                "Title": "Skills/Others/Source Control",
+                "link":"#/skills/source_control",
+                "icon": "",
+                "EnabledOnLoad":true
+            },
+            {
                 "Name": "Languages",
                 "Title": "Languages",
                 "link":"#/langs/all",
-                "icon": "",
+                "icon": "fas fa-language",
                 "EnabledOnLoad":true
             }
         
