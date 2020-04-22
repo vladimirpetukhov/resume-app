@@ -1,142 +1,139 @@
-[
-    {
-       
-        "Layers": [
-            {
-                "Name": "About me",
-                "Title": "About Me",
-                "link":"#/about",
-                "icon": "fas fa-info",
-                "EnabledOnLoad":true
-            },
-            {
-                "Name": "Education",
-                "Title": "Education",
-                "link":"javascipt:void(0)",
-                "icon": "fas fa-book-open",
-                "EnabledOnLoad":true
-            },
-            {
-                "Name": "High_School",
-                "Title": "Education/High School",
-                "link":"#/education/high-school",
-                "icon": "fas fa-school",
-                "url":"https://pgsag-sz.org/",
-                "EnabledOnLoad":true
-            },
-            {
-                "Name": "Software_University",
-                "Title": "Education/SoftUni",
-                "link":"#/education/softuni",
-                "icon": "fas fa-user-graduate",
-                "url":"https://softuni.bg/",
-                "EnabledOnLoad":true
-            },
-            {
-                "Name": "Burgas_Free_University",
-                "Title": "Education/Burgas Free University",
-                "link":"#/education/bfu",
-                "icon": "fas fa-university",
-                "url":"https://www.bfu.bg/bg",
-                "EnabledOnLoad":true
-            },
-            {
-                "Name": "Work_Experiance",
-                "Title": "Work Experiance",
-                "link":"javascipt:void(0)",
-                "icon": "fas fa-id-card-alt",
-                "EnabledOnLoad":true
-            },
-            {
-                "Name": "Work_Dimiroma",
-                "Title": "Work Experiance/Dimiroma Group",
-                "link":"#/work/dimiroma",
-                "url":"http://dimiroma.com/",
-                "icon": "",
-                "EnabledOnLoad":true
-            },
-            {
-                "Name": "Work_Bisoft",
-                "Title": "Work Experiance/Bisoft Ltd",
-                "link":"#/work/bisoft",
-                "url":"https://www.bisoft.bg/",
-                "icon": "",
-                "EnabledOnLoad":true
-            },
-            {
-                "Name": "Work_Hydrolife",
-                "Title": "Work Experiance/Hydrolife Ltd",
-                "link":"#/work/hydrolife",
-                "icon": "",
-                "EnabledOnLoad":true
-            },
-            {
-                "Name": "Work_Patstroy",
-                "Title": "Work Experiance/Patstroy Ltd",
-                "link":"#/work/patstroy",
-                "url":"http://www.patstroy.bg/",
-                "icon": "",
-                "EnabledOnLoad":true
-            },
-            {
-                "Name": "Work_PST",
-                "Title": "Work Experiance/PST Group",
-                "link":"#/work/pst",
-                "url":"http://pstgroup.bg/project/bg/",
-                "icon": "",
-                "EnabledOnLoad":true
-            },
-            {
-                "Name": "Work_Link",
-                "Title": "Work Experiance/Link Ltd",
-                "link":"#/work/link",
-                "url":"http://www.link-bg.com/bg/",
-                "icon": "",
-                "EnabledOnLoad":true
-            },
-            {
-                "Name": "Work_Freelance",
-                "Title": "Work Experiance/Self Employed Worker",
-                "link":"#/work/self",
-                "icon": "",
-                "EnabledOnLoad":true
-            },
-            {
-                "Name": "Work_Hristodoulu",
-                "Title": "Work Experiance/Hristodoulu",
-                "link":"#/work/hristodoulu",
-                "icon": "",
-                "EnabledOnLoad":true
-            },
-            {
-                "Name": "Skills",
-                "Title": "Skills/Frameworks",
-                "link":"#/skills/frameworks",
-                "icon": "",
-                "EnabledOnLoad":true
-            },            
-            {
-                "Name": "Skills",
-                "Title": "Skills/Program Languages",
-                "link":"#/skills/langs",
-                "icon": "",
-                "EnabledOnLoad":true
-            },
-            {
-                "Name": "Skills",
-                "Title": "Skills/ORM",
-                "link":"#/skills/orm",
-                "icon": "",
-                "EnabledOnLoad":true
-            },
-            {
-                "Name": "Skills",
-                "Title": "Skills/Databases",
-                "link":"#/skills/orm",
-                "icon": "",
-                "EnabledOnLoad":true
-            }
+[{
 
-        ]
-    }
-  ]
+    "Layers": [{
+            "Name": "About me",
+            "Title": "About Me",
+            "link": "#/about",
+            "icon": "fas fa-info",
+            "EnabledOnLoad": true
+        },
+        {
+            "Name": "Education",
+            "Title": "Education",
+            "link": "#",
+            "icon": "fas fa-book-open",
+            "EnabledOnLoad": true
+        },
+        {
+            "Name": "High_School",
+            "Title": "Education/High School",
+            "link": "#/education/high-school",
+            "icon": "fas fa-school",
+            "url": "https://pgsag-sz.org/",
+            "EnabledOnLoad": true
+        },
+        {
+            "Name": "Software_University",
+            "Title": "Education/SoftUni",
+            "link": "#/education/softuni",
+            "icon": "fas fa-user-graduate",
+            "url": "https://softuni.bg/",
+            "EnabledOnLoad": true
+        },
+        {
+            "Name": "Burgas_Free_University",
+            "Title": "Education/Burgas Free University",
+            "link": "#/education/bfu",
+            "icon": "fas fa-university",
+            "url": "https://www.bfu.bg/bg",
+            "EnabledOnLoad": true
+        },
+        {
+            "Name": "Work_Experiance",
+            "Title": "Work Experiance",
+            "link": "javascipt:void(0)",
+            "icon": "fas fa-id-card-alt",
+            "EnabledOnLoad": true
+        },
+        {
+            "Name": "Work_Dimiroma",
+            "Title": "Work Experiance/Dimiroma Group",
+            "link": "#/work/dimiroma",
+            "url": "http://dimiroma.com/",
+            "icon": "",
+            "EnabledOnLoad": true
+        },
+        {
+            "Name": "Work_Bisoft",
+            "Title": "Work Experiance/Bisoft Ltd",
+            "link": "#/work/bisoft",
+            "url": "https://www.bisoft.bg/",
+            "icon": "",
+            "EnabledOnLoad": true
+        },
+        {
+            "Name": "Work_Hydrolife",
+            "Title": "Work Experiance/Hydrolife Ltd",
+            "link": "#/work/hydrolife",
+            "icon": "",
+            "EnabledOnLoad": true
+        },
+        {
+            "Name": "Work_Patstroy",
+            "Title": "Work Experiance/Patstroy Ltd",
+            "link": "#/work/patstroy",
+            "url": "http://www.patstroy.bg/",
+            "icon": "",
+            "EnabledOnLoad": true
+        },
+        {
+            "Name": "Work_PST",
+            "Title": "Work Experiance/PST Group",
+            "link": "#/work/pst",
+            "url": "http://pstgroup.bg/project/bg/",
+            "icon": "",
+            "EnabledOnLoad": true
+        },
+        {
+            "Name": "Work_Link",
+            "Title": "Work Experiance/Link Ltd",
+            "link": "#/work/link",
+            "url": "http://www.link-bg.com/bg/",
+            "icon": "",
+            "EnabledOnLoad": true
+        },
+        {
+            "Name": "Work_Freelance",
+            "Title": "Work Experiance/Self Employed Worker",
+            "link": "#/work/self",
+            "icon": "",
+            "EnabledOnLoad": true
+        },
+        {
+            "Name": "Work_Hristodoulu",
+            "Title": "Work Experiance/Hristodoulu",
+            "link": "#/work/hristodoulu",
+            "icon": "",
+            "EnabledOnLoad": true
+        },
+        {
+            "Name": "Skills",
+            "Title": "Skills/Frameworks",
+            "link": "#/skills/frameworks",
+            "icon": "",
+            "EnabledOnLoad": true
+        },
+        {
+            "Name": "Skills",
+            "Title": "Skills/Program Languages",
+            "link": "#/skills/langs",
+            "icon": "",
+            "EnabledOnLoad": true
+        },
+        {
+            "Name": "Skills",
+            "Title": "Skills/ORM",
+            "link": "#/skills/orm",
+            "icon": "",
+            "EnabledOnLoad": true
+        },
+        {
+            "Name": "Skills",
+            "Title": "Skills/Databases",
+            "link": "#/skills/orm",
+            "icon": "",
+            "EnabledOnLoad": true
+        }
+
+    ]
+}]
