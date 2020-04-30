@@ -18,7 +18,7 @@
     "flot": "^4.1.1",
     "fs": "0.0.1-security",
     "handlebars": "^4.2.0",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jquery.tree": "0.0.5",
     "ol": "^5.3.3",
     "popper.js": "^1.15.0",
