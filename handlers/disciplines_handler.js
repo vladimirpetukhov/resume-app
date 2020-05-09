@@ -21,3 +21,15 @@ handlers.iop = async function(ctx) {
         console.log(err);
     }
 };
+
+handlers.numericalMethods = async function(ctx) {
+    document.title = 'Disciplines|Numerical Methods';
+
+    try {
+        ctx.loadPartials({}).then(function() {
+            this.partial('../templates/education/disciplines/numerical_methods.hbs');
+        });
+    } catch (err) {
+        console.log(err);
+    }
+};

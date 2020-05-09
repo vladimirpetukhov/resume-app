@@ -31,6 +31,7 @@ $(() => {
         //disciplines
         this.get('#/operating_systems', handlers.os);
         this.get('#/operation_investigation', handlers.iop);
+        this.get('#/numerical-methods', handlers.numericalMethods);
     });
 
     app.run('#/');
