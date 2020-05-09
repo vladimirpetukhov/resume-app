@@ -26,8 +26,10 @@ handlers.numericalMethods = async function(ctx) {
     document.title = 'Disciplines|Numerical Methods';
 
     try {
-        ctx.loadPartials({}).then(function() {
-            this.partial('../templates/education/disciplines/numerical_methods.hbs');
+        ctx.loadPartials({
+            home: './templates/home.hbs',
+        }).then(function() {
+            this.partial('./templates/education/disciplines/numerical_methods.hbs');
         });
     } catch (err) {
         console.log(err);
