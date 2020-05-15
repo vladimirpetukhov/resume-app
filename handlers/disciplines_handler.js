@@ -94,7 +94,7 @@ handlers.iotSchema = async function(ctx) {
         ctx.loadPartials({
             home: './templates/home.hbs',
         }).then(function() {
-            this.partial('../templates/education/disciplines/iot/schema.hbs');
+            this.partial('./templates/education/disciplines/iot/schema.hbs');
         });
     } catch (err) {
         console.log(err);
