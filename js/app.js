@@ -31,7 +31,15 @@ $(() => {
         //disciplines
         this.get('#/operating_systems', handlers.os);
         this.get('#/operation_investigation', handlers.iop);
-        this.get('#/numerical-methods', handlers.numericalMethods);
+
+        //Numerical Methods
+        this.get('#/numerical-methods/fixed-point', handlers.numericalMethodsFixedPoint);
+        this.get('#/numerical-methods/halving-method', handlers.numericalMethodsHalving);
+        this.get('#/numerical-methods/chords-method', handlers.numericalMethodsChords);
+
+        //#region IoT
+        this.get('#/iot/ESP32-DevKit-Schema', handlers.iotSchema);
+        //#endregion
     });
 
     app.run('#/');

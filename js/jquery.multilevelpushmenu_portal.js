@@ -106,6 +106,7 @@ console.log(settings.menu);
 							.prop({ "href": this.link })
 							.html(`\&nbsp;\&nbsp;\&nbsp;${this.name}`)
 							.addClass(this.icon)
+							.addClass('slider')
 							.appendTo($item);
 						
 						//$titleIcon.click((e) => { zoom_to(e) });

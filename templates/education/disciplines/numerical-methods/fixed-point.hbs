@@ -1,0 +1,86 @@
+<div class="col-8 offset-4">
+    <!-- HTML generated using hilite.me --><div style="background: #272822;
+        overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em
+        .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0;
+                        line-height: 125%"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40</pre></td><td><pre
+                        style="margin: 0; line-height: 125%"><span style="color: #66d9ef">namespace</span> <span style="color: #f8f8f2">_04.FixedPointMethod</span>
+<span style="color: #f8f8f2">{</span>
+    <span style="color: #66d9ef">using</span> <span style="color: #f8f8f2">System;</span>
+    <span style="color: #66d9ef">public</span> <span style="color: #66d9ef">class</span> <span style="color: #a6e22e">FixedPointMethod</span>
+    <span style="color: #f8f8f2">{</span>
+        <span style="color: #75715e">//𝑥. 𝑒𝑥 − 1 = 0 up to the 2nd character</span>
+        <span style="color: #66d9ef">public</span> <span style="color: #66d9ef">static</span> <span style="color: #66d9ef">double</span> <span style="color: #a6e22e">Fx</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">double</span> <span style="color: #f8f8f2">p1)</span>
+        <span style="color: #f8f8f2">{</span>
+            <span style="color: #66d9ef">var</span> <span style="color: #f8f8f2">result</span> <span style="color: #f8f8f2">=</span> <span style="color: #f8f8f2">Math.Pow(Math.Exp(</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">),</span> <span style="color: #f8f8f2">p1);</span>
+            <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">result;</span>
+        <span style="color: #f8f8f2">}</span>
+
+        <span style="color: #66d9ef">public</span> <span style="color: #66d9ef">double</span> <span style="color: #a6e22e">Gp</span><span style="color: #f8f8f2">()</span>
+        <span style="color: #f8f8f2">{</span>
+            <span style="color: #66d9ef">return</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span>
+        <span style="color: #f8f8f2">}</span>
+
+        <span style="color: #66d9ef">public</span> <span style="color: #66d9ef">static</span> <span style="color: #66d9ef">void</span> <span style="color: #a6e22e">Main</span><span style="color: #f8f8f2">()</span>
+        <span style="color: #f8f8f2">{</span>
+            <span style="color: #f8f8f2">Console.WriteLine(</span><span style="color: #e6db74">&quot;Add p1: &quot;</span><span style="color: #f8f8f2">);</span>
+            <span style="color: #66d9ef">var</span> <span style="color: #f8f8f2">p1</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">double</span><span style="color: #f8f8f2">.Parse(Console.ReadLine());</span>
+
+            <span style="color: #f8f8f2">Console.WriteLine(</span><span style="color: #e6db74">&quot;Add precision: &quot;</span><span style="color: #f8f8f2">);</span>
+            <span style="color: #66d9ef">var</span> <span style="color: #f8f8f2">precision</span> <span style="color: #f8f8f2">=</span> <span style="color: #66d9ef">double</span><span style="color: #f8f8f2">.Parse(Console.ReadLine());</span>
+
+            <span style="color: #66d9ef">while</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">true</span><span style="color: #f8f8f2">)</span>
+            <span style="color: #f8f8f2">{</span>
+                <span style="color: #66d9ef">var</span> <span style="color: #f8f8f2">p</span> <span style="color: #f8f8f2">=</span> <span style="color: #f8f8f2">Fx(p1);</span>
+                <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(Math.Abs(p</span> <span style="color: #f8f8f2">-</span> <span style="color: #f8f8f2">p1)</span> <span style="color: #f8f8f2">&lt;</span> <span style="color: #f8f8f2">precision)</span>
+                <span style="color: #f8f8f2">{</span>
+                    <span style="color: #f8f8f2">p1</span> <span style="color: #f8f8f2">=</span> <span style="color: #f8f8f2">p;</span>
+                    <span style="color: #66d9ef">return</span><span style="color: #f8f8f2">;</span>
+                <span style="color: #f8f8f2">}</span>
+
+                <span style="color: #f8f8f2">p1</span> <span style="color: #f8f8f2">=</span> <span style="color: #f8f8f2">p;</span>
+            <span style="color: #f8f8f2">}</span>
+
+        <span style="color: #f8f8f2">}</span>
+    <span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></td></tr></table></div>
+</div>

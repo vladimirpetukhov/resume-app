@@ -49,6 +49,22 @@
     },
     {
         "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Iot/ESP32 DevKit Schema",
+        "link": "#/iot/ESP32-DevKit-Schema",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Iot/Project code",
+        "link": "#/iot/project-code",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
         "Title": "Education/Burgas Free University/Linux System Programming",
         "link": "#/linux-system-programming",
         "icon": "fas fa-university",
@@ -67,6 +83,70 @@
         "Name": "Burgas_Free_University",
         "Title": "Education/Burgas Free University/Numerical Methods",
         "link": "#/numerical-methods",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Numerical Methods/Halving Method",
+        "link": "#/numerical-methods/halving-method",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Numerical Methods/Fixed Point Method",
+        "link": "#/numerical-methods/fixed-point",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Numerical Methods/Chord Method",
+        "link": "#/numerical-methods/chords-method",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Microprocessors",
+        "link": "#/education/bfu/microprocessors",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Control and diagnostic computer systems",
+        "link": "#/education/bfu/cdcs",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Java Programing",
+        "link": "#/education/bfu/java",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Python Programing",
+        "link": "#/education/bfu/python",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/AI",
+        "link": "#/education/bfu/ai",
         "icon": "fas fa-university",
         "url": "https://www.bfu.bg/bg",
         "EnabledOnLoad": true

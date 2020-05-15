@@ -1,0 +1,94 @@
+
+<style>
+    .card-header-tabs {
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    border-bottom: 0; 
+}
+.nav-tabs {
+     border-bottom: none;
+}
+</style>
+<div class="row">
+    <div class="col-7 offset-3 mt-2 mr-4 p-4">
+        <div class="card">
+            <div class="mb-2">
+                <ul class="nav nav-tabs card-header-tabs" id="bologna-list"
+                    role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#schema"
+                            role="tab" aria-controls="description"
+                            aria-selected="true">Schema</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#esp" role="tab"
+                            aria-controls="history" aria-selected="false">ESP32-
+                            DevKit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#soil" role="tab"
+                            aria-controls="deals" aria-selected="false">Solenoid</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#solenoid" role="tab"
+                            aria-controls="deals" aria-selected="false">Soil
+                            Moisture</a>
+                    </li>
+                </ul>
+            </div>
+            <img class="card-img-top" src="../../../../img/esp32.png" alt="Card
+                image cap">
+            <div class="card-body">
+                <h4 class="card-title">Project Shema</h4>
+                <h6 class="card-subtitle mb-2">Sprinkler System</h6>
+                <div class="tab-content mt-3">
+                    <div class="tab-pane active" id="schema"
+                        role="tabpanel">
+                        <p class="card-text">Lorem ipsum dolor sit amet
+                            consectetur adipisicing elit. Ipsam, nam. Numquam
+                            dolorum architecto magni eum non aut, ullam quas
+                            incidunt laborum quis error blanditiis officiis quae
+                            ab voluptatum optio animi? </p>
+                    </div>
+
+                    <div class="tab-pane" id="esp" role="tabpanel"
+                        aria-labelledby="history-tab">
+                        <p class="card-text">First settled around 1000 BCE
+                            and then founded as the Etruscan Felsina about
+                            500 BCE, it was occupied by the Boii in the 4th
+                            century BCE and became a Roman colony and
+                            municipium with the name of Bononia in 196 BCE.
+                        </p>
+                        <a href="#" class="card-link text-danger">Read more</a>
+                    </div>
+
+                    <div class="tab-pane" id="soil" role="tabpanel"
+                        aria-labelledby="deals-tab">
+                        <p class="card-text">Immerse yourself in the
+                            colours, aromas and traditions of Emilia-Romagna
+                            with a holiday in Bologna, and discover the
+                            city's rich artistic heritage.</p>
+                        <a href="#" class="btn btn-danger btn-sm">Get Deals</a>
+                    </div>
+                    <div class="tab-pane" id="solenoid" role="tabpanel"
+                        aria-labelledby="deals-tab">
+                        <p class="card-text">Immerse yourself in the
+                            colours, aromas and traditions of Emilia-Romagna
+                            with a holiday in Bologna, and discover the
+                            city's rich artistic heritage.</p>
+                        <a href="#" class="btn btn-danger btn-sm">Get Deals</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    $('#bologna-list a').on('click', function (e) {
+  e.preventDefault()
+  $(this).tab('show')
+})
+</script>
