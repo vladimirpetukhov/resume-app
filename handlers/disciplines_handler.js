@@ -53,7 +53,7 @@ handlers.numericalMethodsHalving = async function(ctx) {
         ctx.loadPartials({
             home: './templates/home.hbs',
         }).then(function() {
-            this.partial('../templates/education/disciplines/numerical-methods/halving-method.hbs');
+            this.partial('./templates/education/disciplines/numerical-methods/halving-method.hbs');
         });
     } catch (err) {
         console.log(err);
@@ -72,7 +72,7 @@ handlers.numericalMethodsChords = async function(ctx) {
         ctx.loadPartials({
             home: './templates/home.hbs',
         }).then(function() {
-            this.partial('../templates/education/disciplines/numerical-methods/chords-method.hbs');
+            this.partial('./templates/education/disciplines/numerical-methods/chords-method.hbs');
         });
     } catch (err) {
         console.log(err);
