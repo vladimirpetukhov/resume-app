@@ -1,5 +1,6 @@
 const handlers = {};
 
+
 $(() => {
     const app = Sammy('#container', function() {
         this.use('Handlebars', 'hbs');
@@ -52,7 +53,12 @@ $(() => {
         this.get('#/linux-system-programming/threads', handlers.threads);
         this.get('#/linux-system-programming/threads-synchronization', handlers.threadsSynch);
         this.get('#/linux-system-programming/deamons', handlers.deamons);
+        this.get('#/linux-system-programming/course-work', handlers.courseWork);
         //#endregion
+
+        // $.getJSON('http://gd.geobytes.com/GetCityDetails?callback=?', function(data) {
+        //     console.log(JSON.stringify(data, null, 2));
+        // });
     });
 
     app.run('#/');

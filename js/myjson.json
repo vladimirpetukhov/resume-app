@@ -153,6 +153,14 @@
     },
     {
         "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Linux System Programming/Course Work",
+        "link": "#/linux-system-programming/course-work",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
         "Title": "Education/Burgas Free University/Math Operation Investigation",
         "link": "#/operation_investigation",
         "icon": "fas fa-university",
