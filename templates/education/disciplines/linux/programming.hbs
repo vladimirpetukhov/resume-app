@@ -1,0 +1,72 @@
+<div class="col-8 offset-4">
+    <div class="col-12" style="color: #a6e22e;font-size:1.5em">
+        <p>Write a program (‘reversetest.c’), which reads a string line from the
+            keyboard and prints it backwards.</p>
+    </div>
+    <!-- HTML generated using hilite.me --><div style="background: #272822;
+        overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em
+        .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0;
+                        line-height: 125%"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31</pre></td><td><pre
+                        style="margin: 0; line-height: 125%"><span style="color: #75715e">#include &lt;stdio.h&gt;</span>
+<span style="color: #75715e">#include &lt;string.h&gt;</span>
+
+<span style="color: #66d9ef">void</span> <span style="color: #a6e22e">reverse</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">char</span><span style="color: #f92672">*</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">int</span><span style="color: #f8f8f2">);</span>
+
+<span style="color: #66d9ef">int</span> <span style="color: #a6e22e">main</span><span style="color: #f8f8f2">()</span>
+<span style="color: #f8f8f2">{</span>
+   <span style="color: #66d9ef">char</span> <span style="color: #f8f8f2">a[</span><span style="color: #ae81ff">100</span><span style="color: #f8f8f2">];</span>
+
+   <span style="color: #f8f8f2">gets(a);</span>
+
+   <span style="color: #f8f8f2">reverse(a,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">strlen(a)</span><span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">);</span>
+
+   <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;%s</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">a);</span>
+
+   <span style="color: #66d9ef">return</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span>
+<span style="color: #f8f8f2">}</span>
+
+<span style="color: #66d9ef">void</span> <span style="color: #a6e22e">reverse</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">char</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">x,</span> <span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">begin,</span> <span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">end)</span>
+<span style="color: #f8f8f2">{</span>
+   <span style="color: #66d9ef">char</span> <span style="color: #f8f8f2">c;</span>
+
+   <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(begin</span> <span style="color: #f92672">&gt;=</span> <span style="color: #f8f8f2">end)</span>
+      <span style="color: #66d9ef">return</span><span style="color: #f8f8f2">;</span>
+
+   <span style="color: #f8f8f2">c</span>          <span style="color: #f92672">=</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">(x</span><span style="color: #f92672">+</span><span style="color: #f8f8f2">begin);</span>
+   <span style="color: #f92672">*</span><span style="color: #f8f8f2">(x</span><span style="color: #f92672">+</span><span style="color: #f8f8f2">begin)</span> <span style="color: #f92672">=</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">(x</span><span style="color: #f92672">+</span><span style="color: #f8f8f2">end);</span>
+   <span style="color: #f92672">*</span><span style="color: #f8f8f2">(x</span><span style="color: #f92672">+</span><span style="color: #f8f8f2">end)</span>   <span style="color: #f92672">=</span> <span style="color: #f8f8f2">c;</span>
+
+   <span style="color: #f8f8f2">reverse(x,</span> <span style="color: #f92672">++</span><span style="color: #f8f8f2">begin,</span> <span style="color: #f92672">--</span><span style="color: #f8f8f2">end);</span>
+<span style="color: #f8f8f2">}</span>
+</pre></td></tr></table></div>
+</div>

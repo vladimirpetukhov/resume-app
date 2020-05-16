@@ -1,0 +1,376 @@
+<div class="col-8 offset-4">
+    <div class="col-12" style="color:
+        #a6e22e;font-size:1.5em;max-height:200px;overflow-y:auto">
+        <p>Project DoubleSharedMemory:
+            Write a server/client pair of programs (‘dblmemsrv.c’ and
+            ‘dblmemcli.c’), which share blocks of memory between them.
+            The serversupports up to 2 client instances in parallel execution,
+            which should not interfere with each other. The server
+            initializes the shared memory with welcoming messages for the
+            clients and waits for them to modify the memory with
+            their messages. When a new message from the client is written, the
+            server answers with the same message, but with
+            ‘Confirmed!” at the end.
+            The client is started with a single argument: client_number, which
+            identifies the client (1 or 2) for the server. The client
+            should continuously print the message from the shared memory, read a
+            line from the keyboard and write it to the shared
+            memory. The program should quit when ‘q’ message is entered.
+            Program DoubleDumper:
+            Write a program (‘dbldump.c’), which in real time shows the changes
+            in the shared memory from the
+            DoubleSharedMemory project. You may need to modify the server and/or
+            client programs to support this functionality.</p>
+    </div>
+    <h4>
+        doublememclnt.c
+    </h4>
+    <!-- HTML generated using hilite.me --><div style="background: #272822;
+        overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em
+        .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0;
+                        line-height: 125%"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50</pre></td><td><pre
+                        style="margin: 0; line-height: 125%"><span style="color: #75715e">#include &lt;sys/types.h&gt;</span>
+<span style="color: #75715e">#include &lt;sys/shm.h&gt;</span>
+<span style="color: #75715e">#include &lt;sys/ipc.h&gt;</span>
+<span style="color: #75715e">#include &lt;stdio.h&gt;</span>
+<span style="color: #75715e">#include &lt;stdlib.h&gt;</span>
+<span style="color: #75715e">#include &lt;unistd.h&gt;</span>
+<span style="color: #75715e">#include &lt;string.h&gt;</span>
+<span style="color: #75715e">#include &lt;sys/sem.h&gt;</span>
+<span style="color: #75715e">#include &quot;semtypes.h&quot;</span>
+
+<span style="color: #66d9ef">int</span> <span style="color: #a6e22e">clnt</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">argc,</span> <span style="color: #66d9ef">char</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">argv[]){</span>
+<span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">clnt_num;</span>
+<span style="color: #f8f8f2">clnt_num</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">atoi(argv[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">]);</span>
+<span style="color: #66d9ef">key_t</span> <span style="color: #f8f8f2">key;</span>
+
+<span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">memory_block</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">mblock;</span>
+
+<span style="color: #f8f8f2">key</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">ftok(</span><span style="color: #e6db74">&quot;SHMfile&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">clnt_num);</span>
+<span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(key</span> <span style="color: #f92672">==</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">){</span>
+<span style="color: #66d9ef">return</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+<span style="color: #f8f8f2">}</span>
+
+<span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">shmid;</span>
+<span style="color: #f8f8f2">shmid</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">shmget(key,</span> <span style="color: #66d9ef">sizeof</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">memory_block),</span> <span style="color: #ae81ff">0666</span><span style="color: #f8f8f2">);</span>
+<span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(shmid</span> <span style="color: #f92672">==</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">){</span>
+<span style="color: #66d9ef">return</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+<span style="color: #f8f8f2">}</span>
+
+<span style="color: #f8f8f2">mblock</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">memory_block</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">shmat(shmid,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">);</span>
+
+<span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">sembuf</span> <span style="color: #f8f8f2">buf[</span><span style="color: #ae81ff">2</span><span style="color: #f8f8f2">];</span>
+<span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">semid;</span>
+<span style="color: #f8f8f2">semid</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">semget(key,</span><span style="color: #ae81ff">2</span><span style="color: #f8f8f2">,</span><span style="color: #ae81ff">0666</span><span style="color: #f8f8f2">);</span>
+<span style="color: #f8f8f2">buf[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">].sem_op</span> <span style="color: #f92672">=</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+
+<span style="color: #66d9ef">while</span><span style="color: #f8f8f2">(strcmp(</span><span style="color: #e6db74">&quot;q</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">mblock</span><span style="color: #f92672">-&gt;</span><span style="color: #f8f8f2">string)</span> <span style="color: #f92672">!=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">){</span>
+ <span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">i</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span>
+ <span style="color: #f8f8f2">semop(semid,</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">sembuf</span><span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">buf[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">],</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">);</span>
+ <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;Server sends %s</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">mblock</span><span style="color: #f92672">-&gt;</span><span style="color: #f8f8f2">string);</span>
+ <span style="color: #66d9ef">while</span> <span style="color: #f8f8f2">((i</span> <span style="color: #f92672">&lt;</span> <span style="color: #f8f8f2">(MAXLEN</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">))</span> <span style="color: #f92672">&amp;&amp;</span>
+    <span style="color: #f8f8f2">((mblock</span><span style="color: #f92672">-&gt;</span><span style="color: #f8f8f2">string[i</span><span style="color: #f92672">++</span><span style="color: #f8f8f2">]</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">getchar())</span> <span style="color: #f92672">!=</span> <span style="color: #e6db74">&#39;\n&#39;</span><span style="color: #f8f8f2">));</span>
+ <span style="color: #f8f8f2">mblock</span> <span style="color: #f92672">-&gt;</span> <span style="color: #f8f8f2">string[i]</span><span style="color: #f92672">=</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span>
+ <span style="color: #f8f8f2">buf[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">].sem_op</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+ <span style="color: #f8f8f2">buf[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">].sem_op</span> <span style="color: #f92672">=</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+<span style="color: #f8f8f2">semop(semid,</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">sembuf</span><span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">buf,</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">);</span>
+<span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;Client exits</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">);</span>
+<span style="color: #f8f8f2">shmdt((</span><span style="color: #66d9ef">void</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">mblock);</span>
+<span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">EXIT_SUCCESS;</span>
+<span style="color: #f8f8f2">}</span>
+</pre></td></tr></table></div>
+    <h4>
+        doublememsrv.c
+    </h4>
+    <!-- HTML generated using hilite.me --><div style="background: #272822;
+        overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em
+        .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0;
+                        line-height: 125%">  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102</pre></td><td><pre
+                        style="margin: 0; line-height: 125%"><span style="color: #75715e">#include &lt;sys/ipc.h&gt;</span>
+<span style="color: #75715e">#include &lt;sys/sem.h&gt;</span>
+<span style="color: #75715e">#include &lt;sys/types.h&gt;</span>
+<span style="color: #75715e">#include &lt;string.h&gt;</span>
+<span style="color: #75715e">#include &lt;stdlib.h&gt;</span>
+<span style="color: #75715e">#include &lt;unistd.h&gt;</span>
+<span style="color: #75715e">#include &lt;stdio.h&gt;</span>
+<span style="color: #75715e">#include &lt;sys/shm.h&gt;</span>
+<span style="color: #75715e">#include &quot;semtypes.h&quot;</span>
+
+<span style="color: #66d9ef">int</span> <span style="color: #a6e22e">main</span><span style="color: #f8f8f2">()</span>
+<span style="color: #f8f8f2">{</span>
+
+    <span style="color: #66d9ef">key_t</span> <span style="color: #f8f8f2">key1</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">ftok(</span><span style="color: #e6db74">&quot;./semserv&quot;</span><span style="color: #f8f8f2">,</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">);</span>
+    <span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(key1</span> <span style="color: #f92672">==</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">)</span>
+    <span style="color: #f8f8f2">{</span>
+        <span style="color: #66d9ef">return</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+    <span style="color: #f8f8f2">}</span>
+    <span style="color: #66d9ef">key_t</span> <span style="color: #f8f8f2">key2</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">ftok(</span><span style="color: #e6db74">&quot;./semserv&quot;</span><span style="color: #f8f8f2">,</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">);</span>
+    <span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(key2</span> <span style="color: #f92672">==</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">)</span>
+    <span style="color: #f8f8f2">{</span>
+
+        <span style="color: #66d9ef">return</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+    <span style="color: #f8f8f2">}</span>
+
+    <span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">shmid1</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">shmget(key1,</span> <span style="color: #66d9ef">sizeof</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">memory_block),</span> <span style="color: #ae81ff">0666</span> <span style="color: #f92672">|</span> <span style="color: #f8f8f2">IPC_CREAT);</span>
+    <span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">shmid2</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">shmget(key2,</span> <span style="color: #66d9ef">sizeof</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">memory_block),</span> <span style="color: #ae81ff">0666</span> <span style="color: #f92672">|</span> <span style="color: #f8f8f2">IPC_CREAT);</span>
+    <span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">memory_block</span> <span style="color: #f92672">*</span> <span style="color: #f8f8f2">mblock1;</span>
+    <span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">memory_block</span> <span style="color: #f92672">*</span> <span style="color: #f8f8f2">mblock2;</span>
+
+    <span style="color: #f8f8f2">mblock1</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">memory_block</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">shmat(shmid1,</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">);</span>
+    <span style="color: #f8f8f2">mblock2</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">memory_block</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">shmat(shmid2,</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">);</span>
+    <span style="color: #f8f8f2">strcpy(mblock1</span><span style="color: #f92672">-&gt;</span><span style="color: #f8f8f2">string,</span><span style="color: #e6db74">&quot;Hello!&quot;</span><span style="color: #f8f8f2">);</span>
+    <span style="color: #f8f8f2">strcpy(mblock2</span><span style="color: #f92672">-&gt;</span><span style="color: #f8f8f2">string,</span><span style="color: #e6db74">&quot;Hello!&quot;</span><span style="color: #f8f8f2">);</span>
+
+    <span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">sembuf</span> <span style="color: #f8f8f2">buf1[</span><span style="color: #ae81ff">2</span><span style="color: #f8f8f2">];</span>
+    <span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">sembuf</span> <span style="color: #f8f8f2">buf2[</span><span style="color: #ae81ff">2</span><span style="color: #f8f8f2">];</span>
+    <span style="color: #f8f8f2">buf1[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">].sem_num</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span>
+    <span style="color: #f8f8f2">buf1[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">].sem_flg</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">SEM_UNDO;</span>
+    <span style="color: #f8f8f2">buf1[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">].sem_num</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+    <span style="color: #f8f8f2">buf1[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">].sem_flg</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">SEM_UNDO;</span>
+
+    <span style="color: #f8f8f2">buf2[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">].sem_num</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span>
+    <span style="color: #f8f8f2">buf2[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">].sem_flg</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">SEM_UNDO;</span>
+    <span style="color: #f8f8f2">buf2[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">].sem_num</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+    <span style="color: #f8f8f2">buf2[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">].sem_flg</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">SEM_UNDO;</span>
+
+    <span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">semid1</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">semget(key1,</span> <span style="color: #ae81ff">3</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">0666</span> <span style="color: #f92672">|</span> <span style="color: #f8f8f2">IPC_CREAT);</span>
+    <span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">semid2</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">semget(key2,</span> <span style="color: #ae81ff">3</span><span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">0666</span> <span style="color: #f92672">|</span> <span style="color: #f8f8f2">IPC_CREAT);</span>
+
+    <span style="color: #f8f8f2">semctl(semid1,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">SETVAL,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">);</span>
+    <span style="color: #f8f8f2">semctl(semid2,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">SETVAL,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">);</span>
+
+    <span style="color: #f8f8f2">buf1[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">].sem_op</span> <span style="color: #f92672">=</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+    <span style="color: #f8f8f2">buf1[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">].sem_op</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+
+    <span style="color: #f8f8f2">buf2[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">].sem_op</span> <span style="color: #f92672">=</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+    <span style="color: #f8f8f2">buf2[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">].sem_op</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+
+    <span style="color: #f8f8f2">semop(semid1,(</span><span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">sembuf</span><span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">buf1[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">],</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">);</span>
+    <span style="color: #f8f8f2">semop(semid2,(</span><span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">sembuf</span><span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">buf2[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">],</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">);</span>
+    <span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">pid</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">fork();</span>
+    <span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(pid</span> <span style="color: #f92672">==</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span>
+    <span style="color: #f8f8f2">{</span>
+        <span style="color: #66d9ef">while</span><span style="color: #f8f8f2">(strcmp(</span><span style="color: #e6db74">&quot;q</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,mblock1</span><span style="color: #f92672">-&gt;</span><span style="color: #f8f8f2">string)</span><span style="color: #f92672">!=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span>
+        <span style="color: #f8f8f2">{</span>
+            <span style="color: #f8f8f2">semop(semid1,</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">sembuf</span><span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">buf1,</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">);</span>
+            <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;%s Done cl1!&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">mblock1</span><span style="color: #f92672">-&gt;</span><span style="color: #f8f8f2">string);</span>
+            <span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(strcmp(</span><span style="color: #e6db74">&quot;q</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">mblock1</span><span style="color: #f92672">-&gt;</span><span style="color: #f8f8f2">string)</span><span style="color: #f92672">!=</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span>
+                <span style="color: #f8f8f2">strcpy(mblock1</span><span style="color: #f92672">-&gt;</span><span style="color: #f8f8f2">string,</span><span style="color: #e6db74">&quot;ok!&quot;</span><span style="color: #f8f8f2">);</span>
+            <span style="color: #f8f8f2">buf1[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">].sem_op</span> <span style="color: #f92672">=</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+            <span style="color: #f8f8f2">buf1[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">].sem_op</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+            <span style="color: #f8f8f2">semop(semid1,</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">sembuf</span><span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">buf1[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">],</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">);</span>
+        <span style="color: #f8f8f2">}</span>
+    <span style="color: #f8f8f2">}</span>
+    <span style="color: #66d9ef">else</span>
+    <span style="color: #f8f8f2">{</span>
+        <span style="color: #66d9ef">while</span><span style="color: #f8f8f2">(strcmp(</span><span style="color: #e6db74">&quot;q</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">mblock2</span><span style="color: #f92672">-&gt;</span><span style="color: #f8f8f2">string)</span> <span style="color: #f92672">!=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span>
+        <span style="color: #f8f8f2">{</span>
+            <span style="color: #f8f8f2">semop(semid1,</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">sembuf</span><span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">buf2,</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">);</span>
+            <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;%s Done! cl2&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">mblock2</span><span style="color: #f92672">-&gt;</span><span style="color: #f8f8f2">string);</span>
+            <span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(strcmp(</span><span style="color: #e6db74">&quot;q</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,mblock2</span><span style="color: #f92672">-&gt;</span><span style="color: #f8f8f2">string)</span> <span style="color: #f92672">!=</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span>
+                <span style="color: #f8f8f2">strcpy(mblock2</span><span style="color: #f92672">-&gt;</span><span style="color: #f8f8f2">string,</span> <span style="color: #e6db74">&quot;ok!&quot;</span><span style="color: #f8f8f2">);</span>
+            <span style="color: #f8f8f2">buf2[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">].sem_op</span> <span style="color: #f92672">=</span> <span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+            <span style="color: #f8f8f2">buf2[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">].sem_op</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+        <span style="color: #f8f8f2">}</span>
+    <span style="color: #f8f8f2">}</span>
+    <span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(pid</span> <span style="color: #f92672">==</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span>
+    <span style="color: #f8f8f2">{</span>
+        <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;Exit - Client1</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">);</span>
+        <span style="color: #f8f8f2">shmdt((</span><span style="color: #66d9ef">void</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">mblock1);</span>
+        <span style="color: #f8f8f2">semctl(semid1,</span> <span style="color: #ae81ff">2</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">IPC_RMID);</span>
+        <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">EXIT_SUCCESS;</span>
+    <span style="color: #f8f8f2">}</span>
+    <span style="color: #66d9ef">else</span>
+    <span style="color: #f8f8f2">{</span>
+        <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;Exit - Client2</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">);</span>
+        <span style="color: #f8f8f2">shmdt((</span><span style="color: #66d9ef">void</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span> <span style="color: #f8f8f2">mblock2);</span>
+        <span style="color: #f8f8f2">semctl(semid2,</span> <span style="color: #ae81ff">2</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">IPC_RMID);</span>
+        <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">EXIT_SUCCESS;</span>
+    <span style="color: #f8f8f2">}</span>
+<span style="color: #f8f8f2">}</span>
+</pre></td></tr></table></div>
+    <h4>
+        semtypes.h
+    </h4>
+    <!-- HTML generated using hilite.me --><div style="background: #272822;
+        overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em
+        .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0;
+                        line-height: 125%"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13</pre></td><td><pre
+                        style="margin: 0; line-height: 125%"><span style="color: #75715e">#ifndef SHMEM_TYPES</span>
+<span style="color: #75715e">#define SHMEM_TYPES</span>
+
+<span style="color: #75715e">#define FTOK_FILE &quot;./semserv&quot; </span>
+ 
+<span style="color: #75715e">#define MAXLEN 1024</span>
+
+<span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">memory_block</span>
+<span style="color: #f8f8f2">{</span>
+ <span style="color: #66d9ef">char</span> <span style="color: #f8f8f2">string[MAXLEN];</span>
+<span style="color: #f8f8f2">};</span>
+
+<span style="color: #75715e">#endif</span>
+</pre></td></tr></table></div>
+</div>

@@ -40,6 +40,19 @@ $(() => {
         //#region IoT
         this.get('#/iot/ESP32-DevKit-Schema', handlers.iotSchema);
         //#endregion
+
+        //#region Linux System Programming
+        this.get('#/linux-system-programming/linux-basics', handlers.linuxBasics);
+        this.get('#/linux-system-programming/programing', handlers.programming);
+        this.get('#/linux-system-programming/file-system-and-files', handlers.fsf);
+        this.get('#/linux-system-programming/processes', handlers.processes);
+        this.get('#/linux-system-programming/interprocess-communication', handlers.interProcessCommunication);
+        this.get('#/linux-system-programming/ipc-synchronization', handlers.ipcSynch);
+        this.get('#/linux-system-programming/sockets', handlers.sockets);
+        this.get('#/linux-system-programming/threads', handlers.threads);
+        this.get('#/linux-system-programming/threads-synchronization', handlers.threadsSynch);
+        this.get('#/linux-system-programming/deamons', handlers.deamons);
+        //#endregion
     });
 
     app.run('#/');

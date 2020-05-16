@@ -1,0 +1,565 @@
+<div class="col-8 offset-4">
+    <div class="col-12" style="color: #a6e22e;font-size:1.5em">
+        <p>Project BetterChat:
+            Modify the network server/client pair of programs (‘netserver.c’ and
+            ‘netclient.c’) from this lecture with
+            the following improvements:
+            ● Allow multiple messages conversation, until the client sends
+            “!quit” to the server.
+            ● The server should support multiple parallel clients connections.</p>
+    </div>
+    <h4>
+        client.c
+    </h4>
+    <!-- HTML generated using hilite.me --><div style="background: #272822;
+        overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em
+        .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0;
+                        line-height: 125%"> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57</pre></td><td><pre
+                        style="margin: 0; line-height: 125%"><span style="color: #75715e">#include &lt;string.h&gt;</span>
+<span style="color: #75715e">#include &lt;unistd.h&gt;</span>
+<span style="color: #75715e">#include &lt;stdio.h&gt;</span>
+<span style="color: #75715e">#include &lt;stdlib.h&gt;</span>
+<span style="color: #75715e">#include &lt;errno.h&gt;</span>
+<span style="color: #75715e">#include &lt;strings.h&gt;</span>
+<span style="color: #75715e">#include &lt;sys/types.h&gt;</span>
+<span style="color: #75715e">#include &lt;sys/socket.h&gt;</span>
+<span style="color: #75715e">#include &lt;netinet/in.h&gt;</span>
+<span style="color: #75715e">#include &lt;netdb.h&gt; </span>
+
+<span style="color: #75715e">#define BUF_SIZE 256</span>
+
+<span style="color: #66d9ef">int</span> <span style="color: #a6e22e">main</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">argc,</span> <span style="color: #66d9ef">char</span> <span style="color: #f92672">**</span> <span style="color: #f8f8f2">argv)</span>
+<span style="color: #f8f8f2">{</span>
+    <span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">sock,</span> <span style="color: #f8f8f2">port;</span>
+    <span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">sockaddr_in</span> <span style="color: #f8f8f2">serv_addr;</span>
+    <span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">hostent</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">server;</span>
+    <span style="color: #66d9ef">char</span> <span style="color: #f8f8f2">buf[BUF_SIZE];</span>
+
+    <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(argc</span> <span style="color: #f92672">&lt;</span> <span style="color: #ae81ff">3</span><span style="color: #f8f8f2">)</span> 
+    <span style="color: #f8f8f2">{</span>
+       <span style="color: #f8f8f2">fprintf(stderr,</span><span style="color: #e6db74">&quot;usage: %s &lt;hostname&gt; &lt;port_number&gt;</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">argv[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">]);</span>
+       <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">EXIT_FAILURE;</span>
+    <span style="color: #f8f8f2">}</span>
+    <span style="color: #f8f8f2">port</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">atoi(argv[</span><span style="color: #ae81ff">2</span><span style="color: #f8f8f2">]);</span>
+    <span style="color: #f8f8f2">sock</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">socket(AF_INET,</span> <span style="color: #f8f8f2">SOCK_STREAM,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">);</span>
+    <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(sock</span> <span style="color: #f92672">&lt;</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span>
+    <span style="color: #f8f8f2">{</span>
+      <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;socket() failed: %d&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">errno);</span>
+      <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">EXIT_FAILURE;</span>
+    <span style="color: #f8f8f2">}</span>
+    <span style="color: #f8f8f2">server</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">gethostbyname(argv[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">]);</span>
+    <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(server</span> <span style="color: #f92672">==</span> <span style="color: #f8f8f2">NULL)</span> 
+    <span style="color: #f8f8f2">{</span>
+      <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;Host not found</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">);</span>
+      <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">EXIT_FAILURE;</span>
+    <span style="color: #f8f8f2">}</span>
+    <span style="color: #f8f8f2">memset((</span><span style="color: #66d9ef">char</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">serv_addr,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">sizeof</span><span style="color: #f8f8f2">(serv_addr));</span>
+    <span style="color: #f8f8f2">serv_addr.sin_family</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">AF_INET;</span>
+    <span style="color: #f8f8f2">strncpy((</span><span style="color: #66d9ef">char</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span><span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">serv_addr.sin_addr.s_addr,</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">char</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">)server</span><span style="color: #f92672">-&gt;</span><span style="color: #f8f8f2">h_addr,</span> <span style="color: #f8f8f2">server</span><span style="color: #f92672">-&gt;</span><span style="color: #f8f8f2">h_length);</span>
+    <span style="color: #f8f8f2">serv_addr.sin_port</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">htons(port);</span>
+    <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(connect(sock,</span> <span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">serv_addr,</span> <span style="color: #66d9ef">sizeof</span><span style="color: #f8f8f2">(serv_addr))</span> <span style="color: #f92672">&lt;</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span> 
+    <span style="color: #f8f8f2">{</span>
+      <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;connect() failed: %d&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">errno);</span>
+      <span style="color: #66d9ef">return</span> <span style="color: #f8f8f2">EXIT_FAILURE;</span>
+    <span style="color: #f8f8f2">}</span>
+    <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;&gt;&quot;</span><span style="color: #f8f8f2">);</span>
+    <span style="color: #f8f8f2">memset(buf,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">BUF_SIZE);</span>
+    <span style="color: #f8f8f2">fgets(buf,</span> <span style="color: #f8f8f2">BUF_SIZE</span><span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">stdin);</span>
+    <span style="color: #f8f8f2">write(sock,</span> <span style="color: #f8f8f2">buf,</span> <span style="color: #f8f8f2">strlen(buf));</span>
+    <span style="color: #f8f8f2">memset(buf,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">BUF_SIZE);</span>
+    <span style="color: #f8f8f2">read(sock,</span> <span style="color: #f8f8f2">buf,</span> <span style="color: #f8f8f2">BUF_SIZE</span><span style="color: #f92672">-</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">);</span>
+    <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;%s</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,buf);</span>
+    <span style="color: #f8f8f2">close(sock);</span>
+    <span style="color: #66d9ef">return</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span>
+<span style="color: #f8f8f2">}</span>
+</pre></td></tr></table></div>
+    <h4>
+        server.c
+    </h4>
+    <!-- HTML generated using hilite.me --><div style="background: #272822;
+        overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em
+        .8em;padding:.2em .6em;"><table><tr><td><pre style="margin: 0;
+                        line-height: 125%">  1
+  2
+  3
+  4
+  5
+  6
+  7
+  8
+  9
+ 10
+ 11
+ 12
+ 13
+ 14
+ 15
+ 16
+ 17
+ 18
+ 19
+ 20
+ 21
+ 22
+ 23
+ 24
+ 25
+ 26
+ 27
+ 28
+ 29
+ 30
+ 31
+ 32
+ 33
+ 34
+ 35
+ 36
+ 37
+ 38
+ 39
+ 40
+ 41
+ 42
+ 43
+ 44
+ 45
+ 46
+ 47
+ 48
+ 49
+ 50
+ 51
+ 52
+ 53
+ 54
+ 55
+ 56
+ 57
+ 58
+ 59
+ 60
+ 61
+ 62
+ 63
+ 64
+ 65
+ 66
+ 67
+ 68
+ 69
+ 70
+ 71
+ 72
+ 73
+ 74
+ 75
+ 76
+ 77
+ 78
+ 79
+ 80
+ 81
+ 82
+ 83
+ 84
+ 85
+ 86
+ 87
+ 88
+ 89
+ 90
+ 91
+ 92
+ 93
+ 94
+ 95
+ 96
+ 97
+ 98
+ 99
+100
+101
+102
+103
+104
+105
+106
+107
+108
+109
+110
+111
+112
+113
+114
+115
+116
+117
+118
+119
+120
+121
+122
+123
+124
+125
+126
+127
+128
+129
+130
+131
+132
+133
+134
+135
+136
+137
+138
+139
+140
+141
+142
+143
+144
+145
+146
+147
+148
+149
+150
+151
+152
+153
+154
+155
+156
+157
+158
+159
+160
+161
+162
+163
+164
+165
+166
+167
+168
+169
+170
+171
+172
+173
+174
+175
+176
+177
+178
+179
+180
+181
+182
+183
+184
+185
+186
+187
+188
+189
+190
+191
+192
+193
+194
+195
+196
+197
+198
+199
+200
+201
+202
+203
+204
+205
+206
+207
+208
+209
+210
+211
+212
+213</pre></td><td><pre
+                        style="margin: 0; line-height: 125%"><span style="color: #75715e">//Example code: A simple server side code, which echos back the received message. </span>
+<span style="color: #75715e">//Handle multiple socket connections with select and fd_set on Linux </span>
+<span style="color: #75715e">#include &lt;stdio.h&gt; </span>
+<span style="color: #75715e">#include &lt;string.h&gt; //strlen </span>
+<span style="color: #75715e">#include &lt;stdlib.h&gt; </span>
+<span style="color: #75715e">#include &lt;errno.h&gt; </span>
+<span style="color: #75715e">#include &lt;signal.h&gt;</span>
+<span style="color: #75715e">#include &lt;unistd.h&gt; //close </span>
+<span style="color: #75715e">#include &lt;arpa/inet.h&gt; //close </span>
+<span style="color: #75715e">#include &lt;sys/types.h&gt; </span>
+<span style="color: #75715e">#include &lt;sys/socket.h&gt; </span>
+<span style="color: #75715e">#include &lt;netinet/in.h&gt; </span>
+<span style="color: #75715e">#include &lt;sys/time.h&gt; //FD_SET, FD_ISSET, FD_ZERO macros </span>
+	
+<span style="color: #75715e">#define TRUE 1 </span>
+<span style="color: #75715e">#define FALSE 0 </span>
+	
+<span style="color: #66d9ef">int</span> <span style="color: #a6e22e">main</span><span style="color: #f8f8f2">(</span><span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">argc</span> <span style="color: #f8f8f2">,</span> <span style="color: #66d9ef">char</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">argv[])</span> 
+<span style="color: #f8f8f2">{</span> 
+	<span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">opt</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">TRUE;</span> 
+	<span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">master_socket</span> <span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">addrlen</span> <span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">new_socket</span> <span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">client_socket[</span><span style="color: #ae81ff">30</span><span style="color: #f8f8f2">]</span> <span style="color: #f8f8f2">,</span> 
+		<span style="color: #f8f8f2">max_clients</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">30</span> <span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">activity,</span> <span style="color: #f8f8f2">i</span> <span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">valread</span> <span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">sd;</span> 
+	<span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">max_sd;</span> 
+	<span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">port;</span>
+	<span style="color: #66d9ef">int</span> <span style="color: #f8f8f2">pauseinterval;</span>
+	<span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">sockaddr_in</span> <span style="color: #f8f8f2">address;</span> 
+	<span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">timeval</span> <span style="color: #f8f8f2">timeout;</span>
+	<span style="color: #66d9ef">char</span> <span style="color: #f8f8f2">buffer[</span><span style="color: #ae81ff">1025</span><span style="color: #f8f8f2">];</span> <span style="color: #75715e">//data buffer of 1K </span>
+		
+	<span style="color: #66d9ef">FILE</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">file;</span>
+	<span style="color: #66d9ef">char</span> <span style="color: #f8f8f2">arr[</span><span style="color: #ae81ff">50</span><span style="color: #f8f8f2">];</span>
+
+    <span style="color: #75715e">// Проверка за коректни данни при стартиране</span>
+    <span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(argc</span><span style="color: #f92672">&lt;</span><span style="color: #ae81ff">4</span><span style="color: #f8f8f2">)</span>
+    <span style="color: #f8f8f2">{</span>
+        <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;Употреба: %s [порт] [речник] [период на изчакване].</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,argv[</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">]);</span>
+        <span style="color: #f8f8f2">exit(EXIT_FAILURE);</span> <span style="color: #75715e">// край на работа на програмата</span>
+    <span style="color: #f8f8f2">}</span>
+
+	<span style="color: #f8f8f2">port</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">atoi(argv[</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">]);</span>
+	<span style="color: #f8f8f2">pauseinterval</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">atoi(argv[</span><span style="color: #ae81ff">3</span><span style="color: #f8f8f2">]);</span>
+
+	<span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(pauseinterval</span><span style="color: #f92672">&lt;</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">)</span>
+	<span style="color: #f8f8f2">{</span>
+		<span style="color: #f8f8f2">pauseinterval</span><span style="color: #f92672">=</span><span style="color: #ae81ff">1</span><span style="color: #f8f8f2">;</span>
+	<span style="color: #f8f8f2">}</span>
+
+    <span style="color: #f8f8f2">file</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">fopen(argv[</span><span style="color: #ae81ff">2</span><span style="color: #f8f8f2">],</span> <span style="color: #e6db74">&quot;r&quot;</span><span style="color: #f8f8f2">);</span>
+    <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(file</span><span style="color: #f92672">==</span><span style="color: #f8f8f2">NULL){</span>
+        <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;Error reading words file.</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">);</span>
+        <span style="color: #f8f8f2">exit(EXIT_FAILURE);</span> <span style="color: #75715e">// край на работа на програмата</span>
+    <span style="color: #f8f8f2">}</span>
+
+	<span style="color: #f8f8f2">signal(SIGPIPE,</span> <span style="color: #f8f8f2">SIG_IGN);</span>
+
+	<span style="color: #75715e">//set of socket descriptors </span>
+	<span style="color: #f8f8f2">fd_set</span> <span style="color: #f8f8f2">readfds;</span> 
+		
+	<span style="color: #75715e">//initialise all client_socket[] to 0 so not checked </span>
+	<span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">(i</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #f8f8f2">i</span> <span style="color: #f92672">&lt;</span> <span style="color: #f8f8f2">max_clients;</span> <span style="color: #f8f8f2">i</span><span style="color: #f92672">++</span><span style="color: #f8f8f2">)</span> 
+	<span style="color: #f8f8f2">{</span> 
+		<span style="color: #f8f8f2">client_socket[i]</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> 
+	<span style="color: #f8f8f2">}</span> 
+		
+	<span style="color: #75715e">//create a master socket </span>
+	<span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(</span> <span style="color: #f8f8f2">(master_socket</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">socket(AF_INET</span> <span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">SOCK_STREAM</span> <span style="color: #f8f8f2">,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">))</span> <span style="color: #f92672">==</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span> 
+	<span style="color: #f8f8f2">{</span> 
+		<span style="color: #f8f8f2">perror(</span><span style="color: #e6db74">&quot;socket failed&quot;</span><span style="color: #f8f8f2">);</span> 
+		<span style="color: #f8f8f2">exit(EXIT_FAILURE);</span> 
+	<span style="color: #f8f8f2">}</span> 
+	
+	<span style="color: #75715e">//set master socket to allow multiple connections , </span>
+	<span style="color: #75715e">//this is just a good habit, it will work without this </span>
+	<span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(</span> <span style="color: #f8f8f2">setsockopt(master_socket,</span> <span style="color: #f8f8f2">SOL_SOCKET,</span> <span style="color: #f8f8f2">SO_REUSEADDR,</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">char</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span><span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">opt,</span> 
+		<span style="color: #66d9ef">sizeof</span><span style="color: #f8f8f2">(opt))</span> <span style="color: #f92672">&lt;</span> <span style="color: #ae81ff">0</span> <span style="color: #f8f8f2">)</span> 
+	<span style="color: #f8f8f2">{</span> 
+		<span style="color: #f8f8f2">perror(</span><span style="color: #e6db74">&quot;setsockopt&quot;</span><span style="color: #f8f8f2">);</span> 
+		<span style="color: #f8f8f2">exit(EXIT_FAILURE);</span> 
+	<span style="color: #f8f8f2">}</span> 
+	
+	<span style="color: #75715e">//type of socket created </span>
+	<span style="color: #f8f8f2">address.sin_family</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">AF_INET;</span> 
+	<span style="color: #f8f8f2">address.sin_addr.s_addr</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">INADDR_ANY;</span> 
+	<span style="color: #f8f8f2">address.sin_port</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">htons(</span> <span style="color: #f8f8f2">port</span> <span style="color: #f8f8f2">);</span> 
+		
+	<span style="color: #75715e">//bind the socket to localhost port </span>
+	<span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(bind(master_socket,</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">sockaddr</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span><span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">address,</span> <span style="color: #66d9ef">sizeof</span><span style="color: #f8f8f2">(address))</span><span style="color: #f92672">&lt;</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span> 
+	<span style="color: #f8f8f2">{</span> 
+		<span style="color: #f8f8f2">perror(</span><span style="color: #e6db74">&quot;bind failed&quot;</span><span style="color: #f8f8f2">);</span> 
+		<span style="color: #f8f8f2">exit(EXIT_FAILURE);</span> 
+	<span style="color: #f8f8f2">}</span> 
+	<span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;Listener on port %d </span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">port);</span> 
+		
+	<span style="color: #75715e">//try to specify maximum of 3 pending connections for the master socket </span>
+	<span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(listen(master_socket,</span> <span style="color: #ae81ff">3</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">&lt;</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span> 
+	<span style="color: #f8f8f2">{</span> 
+		<span style="color: #f8f8f2">perror(</span><span style="color: #e6db74">&quot;listen&quot;</span><span style="color: #f8f8f2">);</span> 
+		<span style="color: #f8f8f2">exit(EXIT_FAILURE);</span> 
+	<span style="color: #f8f8f2">}</span> 
+		
+	<span style="color: #75715e">//accept the incoming connection </span>
+	<span style="color: #f8f8f2">addrlen</span> <span style="color: #f92672">=</span> <span style="color: #66d9ef">sizeof</span><span style="color: #f8f8f2">(address);</span> 
+	<span style="color: #f8f8f2">puts(</span><span style="color: #e6db74">&quot;Waiting for connections ...&quot;</span><span style="color: #f8f8f2">);</span> 
+		
+
+
+	<span style="color: #66d9ef">while</span><span style="color: #f8f8f2">(TRUE)</span> 
+	<span style="color: #f8f8f2">{</span> 
+  		<span style="color: #f8f8f2">timeout.tv_sec</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span>
+  		<span style="color: #f8f8f2">timeout.tv_usec</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">10</span><span style="color: #f8f8f2">;</span>
+
+		<span style="color: #75715e">//clear the socket set </span>
+		<span style="color: #f8f8f2">FD_ZERO(</span><span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">readfds);</span> 
+	
+		<span style="color: #75715e">//add master socket to set </span>
+		<span style="color: #f8f8f2">FD_SET(master_socket,</span> <span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">readfds);</span> 
+		<span style="color: #f8f8f2">max_sd</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">master_socket;</span> 
+			
+		<span style="color: #75715e">//add child sockets to set </span>
+		<span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">(</span> <span style="color: #f8f8f2">i</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">0</span> <span style="color: #f8f8f2">;</span> <span style="color: #f8f8f2">i</span> <span style="color: #f92672">&lt;</span> <span style="color: #f8f8f2">max_clients</span> <span style="color: #f8f8f2">;</span> <span style="color: #f8f8f2">i</span><span style="color: #f92672">++</span><span style="color: #f8f8f2">)</span> 
+		<span style="color: #f8f8f2">{</span> 
+			<span style="color: #75715e">//socket descriptor </span>
+			<span style="color: #f8f8f2">sd</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">client_socket[i];</span> 
+				
+			<span style="color: #75715e">//if valid socket descriptor then add to read list </span>
+			<span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(sd</span> <span style="color: #f92672">&gt;</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span> 
+				<span style="color: #f8f8f2">FD_SET(</span> <span style="color: #f8f8f2">sd</span> <span style="color: #f8f8f2">,</span> <span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">readfds);</span> 
+				
+			<span style="color: #75715e">//highest file descriptor number, need it for the select function </span>
+			<span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(sd</span> <span style="color: #f92672">&gt;</span> <span style="color: #f8f8f2">max_sd)</span> 
+				<span style="color: #f8f8f2">max_sd</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">sd;</span> 
+		<span style="color: #f8f8f2">}</span> 
+	
+		<span style="color: #75715e">//wait for an activity on one of the sockets , timeout is NULL , </span>
+		<span style="color: #75715e">//so wait indefinitely </span>
+		<span style="color: #f8f8f2">activity</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">select(</span> <span style="color: #f8f8f2">max_sd</span> <span style="color: #f92672">+</span> <span style="color: #ae81ff">1</span> <span style="color: #f8f8f2">,</span> <span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">readfds</span> <span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">NULL</span> <span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">NULL</span> <span style="color: #f8f8f2">,</span> <span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">timeout);</span> 
+	
+		<span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">((activity</span> <span style="color: #f92672">&lt;</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span> <span style="color: #f92672">&amp;&amp;</span> <span style="color: #f8f8f2">(errno</span><span style="color: #f92672">!=</span><span style="color: #f8f8f2">EINTR))</span> 
+		<span style="color: #f8f8f2">{</span> 
+			<span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;select error&quot;</span><span style="color: #f8f8f2">);</span> 
+		<span style="color: #f8f8f2">}</span> 
+			
+		<span style="color: #75715e">//If something happened on the master socket , </span>
+		<span style="color: #75715e">//then its an incoming connection </span>
+		<span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(FD_ISSET(master_socket,</span> <span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">readfds))</span> 
+		<span style="color: #f8f8f2">{</span> 
+			<span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">((new_socket</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">accept(master_socket,</span> 
+					<span style="color: #f8f8f2">(</span><span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">sockaddr</span> <span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span><span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">address,</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">socklen_t</span><span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span><span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">addrlen))</span><span style="color: #f92672">&lt;</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span> 
+			<span style="color: #f8f8f2">{</span> 
+				<span style="color: #f8f8f2">perror(</span><span style="color: #e6db74">&quot;accept&quot;</span><span style="color: #f8f8f2">);</span> 
+				<span style="color: #f8f8f2">exit(EXIT_FAILURE);</span> 
+			<span style="color: #f8f8f2">}</span> 
+			
+			<span style="color: #75715e">//inform user of socket number - used in send and receive commands </span>
+			<span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;New connection, socket fd is %d, ip is : %s, port : %d</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">new_socket</span> <span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">inet_ntoa(address.sin_addr),</span> <span style="color: #f8f8f2">ntohs</span> 
+				<span style="color: #f8f8f2">(address.sin_port));</span> 
+		
+			
+			<span style="color: #75715e">//add new socket to array of sockets </span>
+			<span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">(i</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #f8f8f2">i</span> <span style="color: #f92672">&lt;</span> <span style="color: #f8f8f2">max_clients;</span> <span style="color: #f8f8f2">i</span><span style="color: #f92672">++</span><span style="color: #f8f8f2">)</span> 
+			<span style="color: #f8f8f2">{</span> 
+				<span style="color: #75715e">//if position is empty </span>
+				<span style="color: #66d9ef">if</span><span style="color: #f8f8f2">(</span> <span style="color: #f8f8f2">client_socket[i]</span> <span style="color: #f92672">==</span> <span style="color: #ae81ff">0</span> <span style="color: #f8f8f2">)</span> 
+				<span style="color: #f8f8f2">{</span> 
+					<span style="color: #f8f8f2">client_socket[i]</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">new_socket;</span> 
+					<span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;Adding to list of sockets as %d</span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span> <span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">i);</span> 
+						
+					<span style="color: #66d9ef">break</span><span style="color: #f8f8f2">;</span> 
+				<span style="color: #f8f8f2">}</span> 
+			<span style="color: #f8f8f2">}</span> 
+		<span style="color: #f8f8f2">}</span> 
+
+		
+
+        <span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(fgets</span> <span style="color: #f8f8f2">(arr,</span> <span style="color: #ae81ff">50</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">file)</span> <span style="color: #f92672">!=</span> <span style="color: #f8f8f2">NULL)</span>
+        <span style="color: #f8f8f2">{</span>
+            <span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;%s&quot;</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">arr);</span>
+        <span style="color: #f8f8f2">}</span>
+        <span style="color: #66d9ef">else</span>
+        <span style="color: #f8f8f2">{</span>
+            <span style="color: #f8f8f2">fseek(file,</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">SEEK_SET);</span>
+			<span style="color: #f8f8f2">fgets</span> <span style="color: #f8f8f2">(arr,</span> <span style="color: #ae81ff">50</span><span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">file);</span>
+        <span style="color: #f8f8f2">}</span>
+
+
+		<span style="color: #75715e">//else its some IO operation on some other socket </span>
+		<span style="color: #66d9ef">for</span> <span style="color: #f8f8f2">(i</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> <span style="color: #f8f8f2">i</span> <span style="color: #f92672">&lt;</span> <span style="color: #f8f8f2">max_clients;</span> <span style="color: #f8f8f2">i</span><span style="color: #f92672">++</span><span style="color: #f8f8f2">)</span> 
+		<span style="color: #f8f8f2">{</span> 
+			<span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(client_socket[i]</span><span style="color: #f92672">!=</span><span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span>
+			<span style="color: #f8f8f2">{</span>
+			<span style="color: #f8f8f2">sd</span> <span style="color: #f92672">=</span> <span style="color: #f8f8f2">client_socket[i];</span> 
+
+				<span style="color: #66d9ef">if</span> <span style="color: #f8f8f2">(write(sd</span> <span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">arr</span> <span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">strlen(arr))</span> <span style="color: #f92672">&lt;=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">)</span> 
+				<span style="color: #f8f8f2">{</span>
+						<span style="color: #75715e">//Somebody disconnected , get his details and print </span>
+						<span style="color: #f8f8f2">getpeername(sd</span> <span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">struct</span> <span style="color: #f8f8f2">sockaddr</span><span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span><span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">address,</span> <span style="color: #f8f8f2">(</span><span style="color: #66d9ef">socklen_t</span><span style="color: #f92672">*</span><span style="color: #f8f8f2">)</span><span style="color: #f92672">&amp;</span><span style="color: #f8f8f2">addrlen);</span> 
+						<span style="color: #f8f8f2">printf(</span><span style="color: #e6db74">&quot;Host disconnected, ip %s , port %d </span><span style="color: #ae81ff">\n</span><span style="color: #e6db74">&quot;</span> <span style="color: #f8f8f2">,</span> 
+							<span style="color: #f8f8f2">inet_ntoa(address.sin_addr)</span> <span style="color: #f8f8f2">,</span> <span style="color: #f8f8f2">ntohs(address.sin_port));</span> 
+							
+						<span style="color: #75715e">//Close the socket and mark as 0 in list for reuse </span>
+						<span style="color: #f8f8f2">close(</span> <span style="color: #f8f8f2">sd</span> <span style="color: #f8f8f2">);</span> 
+						<span style="color: #f8f8f2">client_socket[i]</span> <span style="color: #f92672">=</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> 
+				<span style="color: #f8f8f2">}</span>
+			<span style="color: #f8f8f2">}</span>
+
+		<span style="color: #f8f8f2">}</span> 
+
+		<span style="color: #f8f8f2">sleep(pauseinterval);</span>
+
+	<span style="color: #f8f8f2">}</span> 
+		
+	<span style="color: #66d9ef">return</span> <span style="color: #ae81ff">0</span><span style="color: #f8f8f2">;</span> 
+<span style="color: #f8f8f2">}</span> 
+</pre></td></tr></table></div>
+</div>

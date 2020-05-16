@@ -73,6 +73,86 @@
     },
     {
         "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Linux System Programming/Linux Basics",
+        "link": "#/linux-system-programming/linux-basics",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Linux System Programming/Programming",
+        "link": "#/linux-system-programming/programing",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Linux System Programming/File system and files",
+        "link": "#/linux-system-programming/file-system-and-files",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Linux System Programming/Processes",
+        "link": "#/linux-system-programming/processes",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Linux System Programming/Interprocess Communication",
+        "link": "#/linux-system-programming/interprocess-communication",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Linux System Programming/IPC Synchronization",
+        "link": "#/linux-system-programming/ipc-synchronization",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Linux System Programming/Sockets",
+        "link": "#/linux-system-programming/sockets",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Linux System Programming/Threads",
+        "link": "#/linux-system-programming/threads",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Linux System Programming/Threads Synchronization",
+        "link": "#/linux-system-programming/threads-synchronization",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
+        "Title": "Education/Burgas Free University/Linux System Programming/Deamons",
+        "link": "#/linux-system-programming/deamons",
+        "icon": "fas fa-university",
+        "url": "https://www.bfu.bg/bg",
+        "EnabledOnLoad": true
+    },
+    {
+        "Name": "Burgas_Free_University",
         "Title": "Education/Burgas Free University/Math Operation Investigation",
         "link": "#/operation_investigation",
         "icon": "fas fa-university",
